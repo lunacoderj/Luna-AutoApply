@@ -146,8 +146,9 @@ export function startApplyWorker() {
   }, {
     connection: redis,
     concurrency: 2, // Playwright is memory-heavy
-    lockDuration: 180000, // 3 minutes for long-running Playwright jobs
-    maxStalledCount: 3,
+    lockDuration: 300000, // 5 minutes
+    stalledInterval: 120000, // 2 minutes
+    maxStalledCount: 2,
   });
 
   worker.on('failed', (job, err) => logger.error(`Apply job ${job?.id} failed: ${err.message}`));

@@ -122,8 +122,9 @@ export function startScrapeWorker() {
   }, {
     connection: redis,
     concurrency: 3,
-    lockDuration: 180000, // 3 minutes
-    maxStalledCount: 3,
+    lockDuration: 300000, // 5 minutes (less frequent renewals)
+    stalledInterval: 120000, // Check for stalled jobs every 2 mins (standard is 30s)
+    maxStalledCount: 2,
   });
 
   worker.on('failed', (job, err) => logger.error(`Scrape job ${job?.id} failed: ${err.message}`));

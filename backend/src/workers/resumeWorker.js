@@ -96,6 +96,8 @@ export function startResumeWorker() {
   }, {
     connection: redis,
     concurrency: 2,
+    lockDuration: 300000,
+    stalledInterval: 120000,
   });
 
   worker.on('failed', (job, err) => logger.error(`Resume job ${job?.id} failed: ${err.message}`));
