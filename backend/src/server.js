@@ -31,6 +31,7 @@ app.set('trust proxy', 1);
 // ── CORS ───────────────────────────────────────────────────────────
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://luna.jaggu.me',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://127.0.0.1:5173',
