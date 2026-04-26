@@ -1,13 +1,19 @@
 {
   "name": "applypilot-backend",
   "version": "1.0.0",
-  "description": "ApplyPilot backend — scrape, apply, email automation",
+  "private": true,
   "type": "module",
-  "main": "src/server.js",
+  "description": "ApplyPilot backend — scrape, apply, email automation",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
+    "postinstall": "npx playwright install chromium --with-deps",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "workers": "node src/workers/index.js"
+    "build": "npm install && npx playwright install chromium --with-deps",
+    "workers": "node src/workers/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
@@ -27,12 +33,14 @@
     "node-cron": "^4.2.1",
     "pdfjs-dist": "^4.0.379",
     "playwright": "^1.42.1",
-    "resend": "^3.2.0"
+    "playwright-extra": "^4.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "resend": "^3.2.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
-  },
-  "engines": {
-    "node": ">=18.0.0"
   }
 }

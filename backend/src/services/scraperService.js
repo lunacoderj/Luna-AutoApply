@@ -38,9 +38,12 @@ export async function runUserScrape(apiKey, prefs = {}) {
   roles.forEach(role => {
     locations.forEach(loc => {
       const ls = loc === 'Global' ? '' : ` in ${loc}`;
-      queries.push(`${role} internship${ls} site:linkedin.com/jobs/view/`);
-      queries.push(`${role} internship${ls} inurl:viewjob site:indeed.com`);
-      queries.push(`${role} internship${ls} inurl:internship site:internshala.com`);
+      // Broad search excluding strictly monitored sites
+      queries.push(`"${role}" internship${ls} -site:linkedin.com -site:indeed.com`);
+      // Targeting specific ATS platforms that are easier for bots to navigate
+      queries.push(`"${role}" internship${ls} site:boards.greenhouse.io`);
+      queries.push(`"${role}" internship${ls} site:jobs.lever.co`);
+      queries.push(`"${role}" internship${ls} inurl:internship site:internshala.com`);
     });
   });
   if (queries.length > 20) queries.length = 20;
