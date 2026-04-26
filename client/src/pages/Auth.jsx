@@ -64,10 +64,8 @@ export default function Auth() {
         {/* Logo */}
         <div style={{ textAlign:'center', marginBottom:32 }}>
           <Link to="/" style={{ display:'inline-flex', alignItems:'center', gap:10, textDecoration:'none' }}>
-            <div style={{ width:40, height:40, background:'linear-gradient(135deg,#6366f1,#8b5cf6)', borderRadius:12, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:'0 4px 15px rgba(99,102,241,0.4)' }}>
-              <Zap size={20} color="#fff" fill="#fff" />
-            </div>
-            <span style={{ fontWeight:800, fontSize:20, letterSpacing:'-0.5px', color:'var(--text-primary)' }}>ApplyPilot</span>
+            <img src="/logo.png" style={{ width: 40, height: 40, borderRadius: 12, objectFit: 'cover' }} alt="Luna Logo" />
+            <span style={{ fontWeight:800, fontSize:22, letterSpacing:'-0.5px', color:'var(--text-primary)' }}>Luna</span>
           </Link>
           <h1 style={{ fontSize:22, fontWeight:800, marginTop:20, letterSpacing:'-0.3px' }}>
             {mode === 'signup' ? 'Create your account' : 'Welcome back'}

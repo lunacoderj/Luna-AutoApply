@@ -32,21 +32,30 @@ app.set('trust proxy', 1);
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'https://luna.jaggu.me',
+  'https://luna-autoapply.onrender.com', // Allow self-requests if any
   'http://localhost:5173',
   'http://localhost:5174',
-  'http://127.0.0.1:5173',
 ].filter(Boolean);
 
 app.use(cors({
-  origin: isProd
-    ? (origin, cb) => {
-        if (!origin || allowedOrigins.includes(origin)) cb(null, true);
-        else cb(new Error('CORS: origin not allowed'));
-      }
-    : true,
+  origin: (origin, cb) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return cb(null, true);
+    
+    // Check if origin is in allowed list
+    const isAllowed = allowedOrigins.some(ao => origin.startsWith(ao));
+    if (isAllowed) {
+      cb(null, true);
+    } else {
+      logger.warn(`CORS blocked: ${origin}`);
+      cb(new Error('CORS: origin not allowed'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 }));
 
 // ── Request logging ────────────────────────────────────────────────

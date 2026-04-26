@@ -23,10 +23,8 @@ export default function Landing() {
         background:'rgba(5,8,20,0.8)',
       }}>
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-          <div style={{ width:32, height:32, background:'linear-gradient(135deg,#6366f1,#8b5cf6)', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center' }}>
-            <Zap size={16} color="#fff" fill="#fff" />
-          </div>
-          <span style={{ fontWeight:800, fontSize:16, letterSpacing:'-0.3px' }}>ApplyPilot</span>
+          <img src="/logo.png" style={{ width: 32, height: 32, borderRadius: 8, objectFit: 'cover' }} alt="Luna Logo" />
+          <span style={{ fontWeight:800, fontSize:18, letterSpacing:'-0.5px' }}>Luna</span>
         </div>
         <div style={{ display:'flex', gap:12 }}>
           {user
@@ -44,11 +42,11 @@ export default function Landing() {
         <div style={{
           display:'inline-flex', alignItems:'center', gap:8,
           padding:'6px 16px', borderRadius:'var(--radius-full)',
-          background:'rgba(99,102,241,0.1)', border:'1px solid rgba(99,102,241,0.25)',
-          fontSize:12, fontWeight:600, color:'var(--color-accent)',
+          background:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.25)',
+          fontSize:12, fontWeight:600, color:'#a78bfa',
           marginBottom:28, textTransform:'uppercase', letterSpacing:'0.08em',
         }}>
-          <Zap size={12} fill="currentColor" /> Fully Autonomous · AI-Powered
+          <Zap size={12} fill="currentColor" /> Fully Autonomous · Luna AI
         </div>
 
         <h1 style={{
@@ -64,7 +62,7 @@ export default function Landing() {
         </h1>
 
         <p style={{ fontSize:18, color:'var(--text-secondary)', maxWidth:560, lineHeight:1.7, marginBottom:40 }}>
-          ApplyPilot combines intelligent job scraping with autonomous form-filling to submit applications to hundreds of positions every day — hands-free.
+          Luna combines intelligent job scraping with autonomous form-filling to submit applications to hundreds of positions every day — hands-free.
         </p>
 
         <div style={{ display:'flex', gap:14, flexWrap:'wrap', justifyContent:'center' }}>
@@ -76,7 +74,7 @@ export default function Landing() {
 
         {/* Mini metrics */}
         <div style={{ display:'flex', gap:40, marginTop:60, flexWrap:'wrap', justifyContent:'center' }}>
-          {[['12hr','Auto-scan cycle'], ['AI-powered','Application bot'], ['100%','Autonomous']].map(([v, l]) => (
+          {[['12hr','Auto-scan cycle'], ['Luna AI','Application bot'], ['100%','Autonomous']].map(([v, l]) => (
             <div key={l} style={{ textAlign:'center' }}>
               <div style={{ fontSize:22, fontWeight:800, color:'var(--color-primary-light)' }}>{v}</div>
               <div style={{ fontSize:12, color:'var(--text-muted)', marginTop:4 }}>{l}</div>
@@ -93,8 +91,8 @@ export default function Landing() {
         <div className="grid-2" style={{ gap:24 }}>
           {FEATURES.map(({ icon: Icon, title, desc }) => (
             <div key={title} className="glass-card" style={{ padding:28 }}>
-              <div style={{ width:44, height:44, borderRadius:12, background:'rgba(99,102,241,0.1)', border:'1px solid rgba(99,102,241,0.2)', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:16 }}>
-                <Icon size={20} color="var(--color-primary-light)" />
+              <div style={{ width:44, height:44, borderRadius:12, background:'rgba(167,139,250,0.1)', border:'1px solid rgba(167,139,250,0.2)', display:'flex', alignItems:'center', justifyContent:'center', marginBottom:16 }}>
+                <Icon size={20} color="#a78bfa" />
               </div>
               <h3 style={{ fontWeight:700, fontSize:16, marginBottom:8 }}>{title}</h3>
               <p style={{ fontSize:14, color:'var(--text-secondary)', lineHeight:1.6 }}>{desc}</p>
@@ -114,7 +112,7 @@ export default function Landing() {
       </section>
 
       <footer style={{ textAlign:'center', padding:'20px', color:'var(--text-muted)', fontSize:12, borderTop:'1px solid var(--border)' }}>
-        © 2026 ApplyPilot — Built for the ambitious.
+        © 2026 Luna AI — Built for the ambitious.
       </footer>
     </div>
   );
