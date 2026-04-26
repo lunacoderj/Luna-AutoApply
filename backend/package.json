@@ -1,0 +1,38 @@
+{
+  "name": "applypilot-backend",
+  "version": "1.0.0",
+  "description": "ApplyPilot backend — scrape, apply, email automation",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "workers": "node src/workers/index.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@supabase/supabase-js": "^2.39.3",
+    "axios": "^1.6.7",
+    "bullmq": "^5.4.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "express-rate-limit": "^7.2.0",
+    "express-validator": "^7.0.1",
+    "firebase-admin": "^13.8.0",
+    "helmet": "^7.1.0",
+    "ioredis": "^5.3.2",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "node-cron": "^4.2.1",
+    "pdfjs-dist": "^4.0.379",
+    "playwright": "^1.42.1",
+    "resend": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
