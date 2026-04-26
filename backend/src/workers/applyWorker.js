@@ -45,15 +45,17 @@ export function startApplyWorker() {
     if (appErr) throw new Error(`Failed to create application: ${appErr.message}`);
     const appId = appRow.id;
 
+    let profile = {};
     try {
-      // 2. Fetch user data
-      const [profileRes, eduRes, keysRes] = await Promise.all([
-        supabase.from('luna_profiles').select('email,notification_email,full_name').eq('id', userId).single(),
+      // 2. Fetch user data early for reporting
+      const profileRes = await supabase.from('luna_profiles').select('email,notification_email,full_name').eq('id', userId).single();
+      profile = profileRes.data || {};
+
+      const [eduRes, keysRes] = await Promise.all([
         supabase.from('luna_education_details').select('*').eq('user_id', userId).single(),
         supabase.from('luna_api_keys').select('key_name,encrypted_value').eq('user_id', userId),
       ]);
 
-      const profile   = profileRes.data || {};
       const education = eduRes.data || {};
       const keys      = (keysRes.data || []).map(k => ({ ...k, decrypted: decryptKey(k.encrypted_value) }));
 
@@ -111,27 +113,33 @@ export function startApplyWorker() {
 
       // 7. Queue for batch report
       const emailTarget = profile.notification_email || profile.email;
-      if (!pendingReports.has(userId)) {
-        pendingReports.set(userId, []);
-        setTimeout(() => flushReport(userId, emailTarget), 2 * 60 * 1000); // Flush after 2 minutes for testing
+      if (emailTarget) {
+        if (!pendingReports.has(userId)) {
+          pendingReports.set(userId, []);
+          setTimeout(() => flushReport(userId, emailTarget), 2 * 60 * 1000); 
+        }
+        pendingReports.get(userId).push({
+          status: result.success ? 'success' : 'failed',
+          internships: internship,
+        });
       }
-      pendingReports.get(userId).push({
-        status: result.success ? 'success' : 'failed',
-        internships: internship,
-      });
 
       logger.info(`Apply ${result.success ? 'succeeded' : 'failed'} for ${appId}`);
     } catch (err) {
-      // 7. Queue for batch report (even if it failed)
+      logger.error(`Error in apply worker for job ${job.id}: ${err.message}`);
+      
+      // 8. Queue for batch report (even if it failed)
       const emailTarget = profile.notification_email || profile.email;
-      if (!pendingReports.has(userId)) {
-        pendingReports.set(userId, []);
-        setTimeout(() => flushReport(userId, emailTarget), 2 * 60 * 1000); 
+      if (emailTarget) {
+        if (!pendingReports.has(userId)) {
+          pendingReports.set(userId, []);
+          setTimeout(() => flushReport(userId, emailTarget), 2 * 60 * 1000); 
+        }
+        pendingReports.get(userId).push({
+          status: 'failed',
+          internships: { title: 'Unknown', company: 'Check Logs', ...err }, 
+        });
       }
-      pendingReports.get(userId).push({
-        status: 'failed',
-        internships: { title: 'Unknown', company: 'Check Logs', ...err }, 
-      });
 
       throw err;
     }
