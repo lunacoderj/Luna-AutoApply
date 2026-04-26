@@ -1,4 +1,8 @@
-# ApplyPilot
+<p align="center">
+  <img src="client/public/logo.png" width="200" alt="Luna Logo">
+</p>
+
+# ApplyPilot (Luna)
 
 **Autonomous Internship Discovery & Application Platform**
 

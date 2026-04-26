@@ -39,17 +39,9 @@ export default function Navbar() {
       {/* Logo */}
       <div style={{ padding: '0 20px 28px', borderBottom: '1px solid var(--border)' }}>
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-          <div style={{
-            width:36, height:36,
-            background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-            borderRadius: 10,
-            display:'flex', alignItems:'center', justifyContent:'center',
-            boxShadow: '0 4px 15px rgba(99,102,241,0.4)',
-          }}>
-            <Zap size={18} color="#fff" fill="#fff" />
-          </div>
+          <img src="/logo.png" style={{ width: 36, height: 36, borderRadius: 10, objectFit: 'cover' }} alt="Luna Logo" />
           <div>
-            <div style={{ fontWeight: 800, fontSize: 15, letterSpacing: '-0.3px' }}>ApplyPilot</div>
+            <div style={{ fontWeight: 800, fontSize: 16, letterSpacing: '-0.3px', color: '#fff' }}>Luna</div>
             <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Autonomous Bot</div>
           </div>
         </div>
