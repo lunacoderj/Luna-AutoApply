@@ -28,35 +28,16 @@ const PORT   = parseInt(process.env.PORT || '3000');
 app.use(helmet({ contentSecurityPolicy: false }));
 app.set('trust proxy', 1);
 
-// ── CORS ───────────────────────────────────────────────────────────
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'https://luna.jaggu.me',
-  'https://luna-autoapply.onrender.com', // Allow self-requests if any
-  'http://localhost:5173',
-  'http://localhost:5174',
-].filter(Boolean);
-
+// ── 1. GLOBAL CORS (MUST BE FIRST) ──────────────────────────────
 app.use(cors({
-  origin: (origin, cb) => {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return cb(null, true);
-    
-    // Check if origin is in allowed list
-    const isAllowed = allowedOrigins.some(ao => origin.startsWith(ao));
-    if (isAllowed) {
-      cb(null, true);
-    } else {
-      logger.warn(`CORS blocked: ${origin}`);
-      cb(new Error('CORS: origin not allowed'));
-    }
-  },
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
 }));
+
+// Handle OPTIONS preflight explicitly
+app.options('*', cors());
 
 // ── Request logging ────────────────────────────────────────────────
 app.use(morgan(isProd ? 'combined' : 'dev', {
