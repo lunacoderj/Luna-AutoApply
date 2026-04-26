@@ -45,11 +45,13 @@ export function startApplyWorker() {
     if (appErr) throw new Error(`Failed to create application: ${appErr.message}`);
     const appId = appRow.id;
 
-    let profile = {};
+    let profile = { full_name: '', email: '', notification_email: '' };
     try {
       // 2. Fetch user data early for reporting
       const profileRes = await supabase.from('luna_profiles').select('email,notification_email,full_name').eq('id', userId).single();
-      profile = profileRes.data || {};
+      if (profileRes.data) {
+        profile = profileRes.data;
+      }
 
       const [eduRes, keysRes] = await Promise.all([
         supabase.from('luna_education_details').select('*').eq('user_id', userId).single(),
@@ -60,8 +62,8 @@ export function startApplyWorker() {
       const keys      = (keysRes.data || []).map(k => ({ ...k, decrypted: decryptKey(k.encrypted_value) }));
 
       const userData = {
-        name:     profile.full_name,
-        email:    profile.email,
+        name:     profile.full_name || '',
+        email:    profile.email || '',
         education,
         skills:   education.skills || [],
         degree:   `${education.degree || ''} in ${education.branch || ''}`,
@@ -129,7 +131,7 @@ export function startApplyWorker() {
       logger.error(`Error in apply worker for job ${job.id}: ${err.message}`);
       
       // 8. Queue for batch report (even if it failed)
-      const emailTarget = profile.notification_email || profile.email;
+      const emailTarget = profile?.notification_email || profile?.email;
       if (emailTarget) {
         if (!pendingReports.has(userId)) {
           pendingReports.set(userId, []);
@@ -143,6 +145,7 @@ export function startApplyWorker() {
 
       throw err;
     }
+
   }, {
     connection: redis,
     concurrency: 2, // Playwright is memory-heavy

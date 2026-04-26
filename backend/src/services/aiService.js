@@ -17,7 +17,9 @@ export class AIService {
     if (this.provider === 'gemini') {
       try {
         const genAI = new GoogleGenerativeAI(this.apiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        // Using 'gemini-1.5-flash' which is the stable identifier.
+        // Some SDK versions might try v1beta by default; v1 is safer for some keys.
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' }, { apiVersion: 'v1' });
         
         logger.info(`[Gemini] Sending prompt (${prompt.substring(0, 50)}...)`);
         const result = await model.generateContent(prompt);
@@ -25,7 +27,7 @@ export class AIService {
         logger.info(`[Gemini] Received response (${text.substring(0, 50)}...)`);
         return text;
       } catch (err) {
-        logger.error(`[Gemini Error] Status: ${err.status}, Message: ${err.message}`);
+        logger.error(`[Gemini Error] Status: ${err.status}, Message: ${err.message}, Stack: ${err.stack}`);
         throw err;
       }
     }
