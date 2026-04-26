@@ -1,0 +1,20 @@
+services:
+  # Frontend Static Site
+  - type: static
+    name: luna-frontend
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: ./dist
+    routes:
+      # This rule fixes the 404 error for sub-routes
+      - source: /*
+        destination: /index.html
+        type: rewrite
+
+  # Backend Web Service
+  - type: web
+    name: luna-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start

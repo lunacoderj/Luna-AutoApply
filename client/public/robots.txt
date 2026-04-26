@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /ai-keys
+Disallow: /preferences
+Disallow: /profile
+
+Sitemap: https://luna.jaggu.me/sitemap.xml
